@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_image"
+        android:icon="@drawable/baseline_extension_white_48"
+        android:title="@string/image" />
+
+    <item
+        android:id="@+id/navigation_favorite"
+        android:icon="@android:drawable/btn_star"
+        android:title="@string/favorite" />
+</menu>

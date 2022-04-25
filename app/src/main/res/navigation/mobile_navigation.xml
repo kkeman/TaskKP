@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_image">
+
+    <fragment
+        android:id="@+id/navigation_image"
+        android:name="com.service.codingtest.view.fragments.ImageFragment"
+        android:label="@string/image"
+        tools:layout="@layout/frag_image" />
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.service.codingtest.view.fragments.FavoriteFragment"
+        android:label="@string/favorite"
+        tools:layout="@layout/frag_favorite" />
+
+</navigation>
