@@ -18,23 +18,65 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textColor="#000000"
             android:textSize="15sp"
             android:singleLine="true"
             android:layout_marginLeft="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_thumb"
+            app:layout_constraintRight_toLeftOf="@id/tv_datetime"
+            tool:text="책 이름" />
+
+        <TextView
+            android:id="@+id/tv_contents"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintBottom_toTopOf="@id/tv_sale_price"
+            app:layout_constraintLeft_toRightOf="@id/iv_thumb"
             app:layout_constraintRight_toLeftOf="@id/cb_favorite"
-            tool:text="이름" />
+            tool:text="책 설명" />
+
+        <TextView
+            android:id="@+id/tv_sale_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_thumb"
+            app:layout_constraintLeft_toRightOf="@id/iv_thumb"
+            app:layout_constraintRight_toLeftOf="@id/cb_favorite"
+            tool:text="책 가격" />
+
+        <TextView
+            android:id="@+id/tv_datetime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/cb_favorite"
+            tool:text="출시일" />
 
         <CheckBox
             android:id="@+id/cb_favorite"

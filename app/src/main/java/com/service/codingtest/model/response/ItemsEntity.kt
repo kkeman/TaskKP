@@ -18,6 +18,25 @@ data class ItemsEntity(
         @SerializedName("thumbnail")
         val thumbnail: String,
 
+        @SerializedName("contents")
+        val contents: String,
+
+
+        @SerializedName("sale_price")
+        val sale_price: Int,
+
+
+        @SerializedName("datetime")
+        val datetime: String,
+
+
+        @SerializedName("url")
+        val url: String,
+
+
+        @SerializedName("publisher")
+        val publisher: String,
+
         var searchWord: String,
 
         var isFavorite: Boolean

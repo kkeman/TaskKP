@@ -1,6 +1,7 @@
 package com.service.codingtest.view.adapters
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,10 @@ import com.service.codingtest.model.response.FavoriteEntity
 import com.service.codingtest.model.response.ItemsEntity
 import com.service.codingtest.network.MLog
 import kotlinx.android.synthetic.main.item_image.view.*
+import java.text.DateFormat
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ImageAdapter: PagingDataAdapter<ItemsEntity, ImageAdapter.ViewHolder>(ChatDiffCallback) {
 
@@ -32,6 +37,21 @@ class ImageAdapter: PagingDataAdapter<ItemsEntity, ImageAdapter.ViewHolder>(Chat
             .into(holder.iv_thumb)
 
         holder.tv_title.text = data.title
+
+        holder.tv_contents.text = data.contents
+
+        if(data.sale_price > 0) {
+            val dFormatter = DecimalFormat("###,###,###")
+            holder.tv_sale_price.text = dFormatter.format(data.sale_price)
+        }
+
+        if(data.datetime.isNotEmpty()) {
+            val df1: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+            val result1: Date = df1.parse(data.datetime) as Date
+            val rewardString = format.format(result1)
+            holder.tv_datetime.text = rewardString
+        }
 
         holder.cb_favorite.setOnCheckedChangeListener(null)
         holder.cb_favorite.isChecked = data.isFavorite
@@ -65,6 +85,10 @@ class ImageAdapter: PagingDataAdapter<ItemsEntity, ImageAdapter.ViewHolder>(Chat
         val iv_thumb = itemView.iv_thumb
         val cb_favorite = itemView.cb_favorite
         val tv_title = itemView.tv_title
+        val tv_contents = itemView.tv_contents
+        val tv_sale_price = itemView.tv_sale_price
+        val tv_datetime = itemView.tv_datetime
+
     }
 
     companion object {

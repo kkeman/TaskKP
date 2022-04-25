@@ -15,7 +15,8 @@ interface ImageAPI {
     @GET("/v3/search/book")
     suspend fun getAPI(
         @Query("query") query: String? = null,
-        @Query("page") page: Int? = 0)
+        @Query("page") page: Int? = 0,
+        @Query("size") size: Int? = 50)
             : JsonData
 
     companion object {

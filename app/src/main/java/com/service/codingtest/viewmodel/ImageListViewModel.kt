@@ -30,7 +30,7 @@ class ImageListViewModel(private val savedStateHandle: SavedStateHandle, private
         savedStateHandle.getLiveData<String>(KEY_SEARCH)
             .asFlow()
             .flatMapLatest {
-                documentRepository.postsOfSubDocument(it, 30)
+                documentRepository.postsOfSubDocument(it, 10)
             }
     ).flattenMerge(2)
 
