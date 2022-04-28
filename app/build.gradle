@@ -81,4 +81,6 @@ dependencies {
     // rxjava
     implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
 }

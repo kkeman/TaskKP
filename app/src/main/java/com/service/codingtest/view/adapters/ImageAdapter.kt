@@ -1,10 +1,14 @@
 package com.service.codingtest.view.adapters
 
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +18,23 @@ import com.service.codingtest.db.AppDB
 import com.service.codingtest.model.response.FavoriteEntity
 import com.service.codingtest.model.response.ItemsEntity
 import com.service.codingtest.network.MLog
+import com.service.codingtest.view.activitys.MainActivity
+import com.service.codingtest.view.fragments.DetailFragment
+import com.service.codingtest.view.fragments.ImageFragment
 import kotlinx.android.synthetic.main.item_image.view.*
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ImageAdapter: PagingDataAdapter<ItemsEntity, ImageAdapter.ViewHolder>(ChatDiffCallback) {
+
+class ImageAdapter(val context: Context): PagingDataAdapter<ItemsEntity, ImageAdapter.ViewHolder>(ChatDiffCallback) {
 
     private val TAG = ImageAdapter::class.java.name
+
+//    fun ImageAdapter(context: Context) {
+//
+//    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_image, viewGroup, false)
@@ -76,6 +88,16 @@ class ImageAdapter: PagingDataAdapter<ItemsEntity, ImageAdapter.ViewHolder>(Chat
             }
 
             MLog.d(TAG, data.isbn +  " / " + b + " setOnCheckedChangeListener")
+        }
+
+        holder.itemView.setOnClickListener {
+
+            val fm: FragmentManager = (context as MainActivity).supportFragmentManager
+            fm.setFragmentResult("requestKey", bundleOf("bundleKey" to data, "position" to position))
+            val imageFragment: Fragment = DetailFragment()
+            fm.beginTransaction().add(R.id.main_container, imageFragment, "1").addToBackStack(null).commit()
+
+//            peek(position)!!.isFavorite = true
         }
 
         MLog.d(TAG, data.isbn +  " / " + data.isFavorite + " / "+data.isbn)

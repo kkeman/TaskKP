@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.4185185185185185" />
+        <entry key="../../../.gradle/caches/transforms-3/71943ecc2800de4fdeac19591a4427a5/transformed/jetified-appcompat-resources-1.2.0/res/drawable/abc_vector_test.xml" value="0.226" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22735507246376813" />
+        <entry key="app/src/main/res/layout/frag_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/frag_favorite.xml" value="0.22213779128672745" />
         <entry key="app/src/main/res/layout/frag_image.xml" value="0.21321258544921876" />
         <entry key="app/src/main/res/layout/item_image.xml" value="0.22213779128672745" />
       </map>

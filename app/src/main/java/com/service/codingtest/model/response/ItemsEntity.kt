@@ -1,10 +1,13 @@
 package com.service.codingtest.model.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "Items")
 data class ItemsEntity(
 
@@ -40,4 +43,4 @@ data class ItemsEntity(
         var searchWord: String,
 
         var isFavorite: Boolean
-)
+): Parcelable

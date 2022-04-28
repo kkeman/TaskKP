@@ -16,6 +16,9 @@ interface ItemsDao {
     suspend fun update(items: ItemsEntity)
 
     @Query("SELECT * FROM Items WHERE searchWord = :searchWord")
+    fun loadAllLog(searchWord: String): List<ItemsEntity>
+
+    @Query("SELECT * FROM Items WHERE searchWord = :searchWord")
     fun loadAll(searchWord: String): PagingSource<Int, ItemsEntity>
 
     @Query("SELECT EXISTS(SELECT * FROM Items WHERE isbn=:isbn)")

@@ -17,35 +17,35 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+//        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val imageFragment: Fragment = ImageFragment()
         val favoriteFragment: Fragment = FavoriteFragment()
         val fm: FragmentManager = supportFragmentManager
         var active: Fragment = imageFragment
 
-        fm.beginTransaction().add(R.id.main_container, favoriteFragment, "2").hide(favoriteFragment)
-            .commit();
-        fm.beginTransaction().add(R.id.main_container, imageFragment, "1").commit();
+//        fm.beginTransaction().add(R.id.main_container, favoriteFragment, "2").hide(favoriteFragment)
+//            .commit();
+        fm.beginTransaction().add(R.id.main_container, imageFragment, "1").commit()
 
-        val mOnNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
-            object : BottomNavigationView.OnNavigationItemSelectedListener {
-                override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
-                    when (item.getItemId()) {
-                        R.id.navigation_image -> {
-                            fm.beginTransaction().hide(active).show(imageFragment).commit()
-                            active = imageFragment
-                            return true
-                        }
-                        R.id.navigation_favorite -> {
-                            fm.beginTransaction().hide(active).show(favoriteFragment).commit()
-                            active = favoriteFragment
-                            return true
-                        }
-                    }
-                    return false
-                }
-            }
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+//        val mOnNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
+//            object : BottomNavigationView.OnNavigationItemSelectedListener {
+//                override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
+//                    when (item.getItemId()) {
+//                        R.id.navigation_image -> {
+//                            fm.beginTransaction().hide(active).show(imageFragment).commit()
+//                            active = imageFragment
+//                            return true
+//                        }
+//                        R.id.navigation_favorite -> {
+//                            fm.beginTransaction().hide(active).show(favoriteFragment).commit()
+//                            active = favoriteFragment
+//                            return true
+//                        }
+//                    }
+//                    return false
+//                }
+//            }
+//        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }
