@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Puzzle</string>
+    <string name="app_name">TaskKP</string>
 
     <string name="alert">알림</string>
     <string name="ok">확인</string>
