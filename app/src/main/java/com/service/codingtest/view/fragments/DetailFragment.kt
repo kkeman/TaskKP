@@ -10,14 +10,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.bumptech.glide.Glide
 import com.service.codingtest.R
 import com.service.codingtest.databinding.FragDetailBinding
+import com.service.codingtest.db.AppDB
 import com.service.codingtest.model.response.ItemsEntity
 import com.service.codingtest.view.adapters.FavoriteAdapter
 import com.service.codingtest.viewmodel.FavoriteViewModel
 import com.service.codingtest.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.frag_detail.*
+import kotlinx.android.synthetic.main.frag_image.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -76,7 +82,12 @@ class DetailFragment : Fragment() {
 
             cb_favorite.setOnCheckedChangeListener { compoundButton, b ->
                 data.isFavorite = b
-                viewModel.select(data, bundle.getInt("position"))
+
+                lifecycleScope.launchWhenCreated {
+                    AppDB.getInstance(requireContext()).imageDao().update(data)
+
+                    viewModel.select(data, bundle.getInt("position"))
+                }
             }
         }
     }

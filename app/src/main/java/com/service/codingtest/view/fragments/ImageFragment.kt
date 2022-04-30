@@ -2,18 +2,19 @@ package com.service.codingtest.view.fragments
 
 
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.*
 import androidx.paging.LoadState
 import androidx.savedstate.SavedStateRegistryOwner
@@ -48,7 +49,7 @@ class ImageFragment : Fragment() {
 
     private lateinit var adapter: ImageAdapter
 
-//    private val model: SharedViewModel by activityViewModels()
+    //    private val model: SharedViewModel by activityViewModels()
     private val viewModel: SharedViewModel by activityViewModels()
 
     class MainViewModelFactory(
@@ -92,34 +93,11 @@ class ImageFragment : Fragment() {
         initSwipeToRefresh()
         initSearchEditText()
 
-//        setFragmentResultListener("requestKey") { requestKey, bundle ->
-//            // We use a String here, but any type that can be put in a Bundle is supported
-//            val result = bundle.getString("bundleKey")
-//            Log.e("1111111", result.toString())
-//            // Do something with the result
-//        }
-
         viewModel.getSelected().observe(viewLifecycleOwner) {
-            Log.e("1111111", it.toString())
             adapter.notifyItemChanged(it)
-
-//            AppDB.getInstance(requireContext()).imageDao().loadAll("target").size
-
-            Log.e("1111111", "size:"+AppDB.getInstance(requireContext()).imageDao().loadAllLog("target").size)
-            var list = AppDB.getInstance(requireContext()).imageDao().loadAllLog("target")
-
-            list.forEach {
-                if(it.isFavorite)
-                Log.e("1111", it.title + " / " + it.isFavorite)
-            }
         }
 
     }
-
-//    override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
-//        super.onListItemClick(l, v, position, id)
-//        Log.e("1111111", "1111111")
-//    }
 
     private fun initImageListView() {
         adapter = ImageAdapter(requireContext())
@@ -127,7 +105,6 @@ class ImageFragment : Fragment() {
             header = ImageLoadStateAdapter(adapter),
             footer = ImageLoadStateAdapter(adapter)
         )
-
 
 
 //        adapter.peek()
@@ -197,6 +174,7 @@ class ImageFragment : Fragment() {
 
             override fun onError(e: Throwable?) {}
         })
+
     }
 
 }

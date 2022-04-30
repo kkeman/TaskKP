@@ -1,5 +1,6 @@
 package com.service.codingtest.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.LoadType.*
@@ -37,7 +38,10 @@ class PageKeyedRemoteMediator(
 
             var page = when (loadType) {
                 REFRESH -> 0
-                PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+                PREPEND ->  {
+                    MLog.d(TAG, "PREPEND")
+                    return MediatorResult.Success(endOfPaginationReached = true)
+                }
                 APPEND -> {
                     val remoteKey = db.withTransaction {
                         remoteKeyDao.remoteKeyBySearchWord(query)
@@ -74,7 +78,7 @@ class PageKeyedRemoteMediator(
                 imageDao.insertAll(items)
             }
 
-            return MediatorResult.Success(endOfPaginationReached = items.isEmpty())
+            return MediatorResult.Success(endOfPaginationReached = items.isEmpty() || data.meta.is_end)
         } catch (e: IOException) {
             return MediatorResult.Error(e)
         } catch (e: HttpException) {

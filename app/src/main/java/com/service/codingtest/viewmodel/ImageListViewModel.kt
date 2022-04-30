@@ -17,7 +17,7 @@ class ImageListViewModel(private val savedStateHandle: SavedStateHandle, private
         const val KEY_SEARCH = "search"
     }
 
-    val searchWord = ObservableField("target")
+    val searchWord = ObservableField("targett")
 
     private val clearListCh = Channel<Unit>(Channel.CONFLATED)
 
