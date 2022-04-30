@@ -84,6 +84,7 @@
             android:layout_height="50dp"
             android:background="@drawable/checkbox_favorite"
             android:button="@null"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
