@@ -43,7 +43,7 @@ class ImageAdapter(val context: Context): PagingDataAdapter<ItemsEntity, ImageAd
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data = getItem(position)!!
+        val data = getItem(position)!! ?: return
 
         Glide.with(holder.itemView.context).load(data.thumbnail)
             .into(holder.iv_thumb)
