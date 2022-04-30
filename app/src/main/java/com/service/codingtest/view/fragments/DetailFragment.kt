@@ -1,29 +1,21 @@
 package com.service.codingtest.view.fragments
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import com.bumptech.glide.Glide
 import com.service.codingtest.R
-import com.service.codingtest.databinding.FragDetailBinding
 import com.service.codingtest.db.AppDB
 import com.service.codingtest.model.response.ItemsEntity
 import com.service.codingtest.view.adapters.FavoriteAdapter
-import com.service.codingtest.viewmodel.FavoriteViewModel
 import com.service.codingtest.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.frag_detail.*
-import kotlinx.android.synthetic.main.frag_image.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -34,22 +26,14 @@ class DetailFragment : Fragment() {
 
     private val mTAG = DetailFragment::class.java.name
 
-    private var mMediaFileAdapter: FavoriteAdapter? = null
-
-//    private lateinit var viewDataBinding: FragDetailBinding
-//    private val viewModel by viewModels<SharedViewModel>()
     private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        viewDataBinding = FragDetailBinding.bind(inflater.inflate(R.layout.frag_detail, container, false)).apply { viewmodel = viewModel  }
-//        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-//        viewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
-//        return viewDataBinding.root
         return inflater.inflate(R.layout.frag_detail, null);
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         toolbar.setNavigationOnClickListener(View.OnClickListener { requireActivity().onBackPressed() })
 

@@ -86,17 +86,16 @@ class ImageFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initImageListView()
         initSwipeToRefresh()
         initSearchEditText()
 
-        viewModel.getSelected().observe(viewLifecycleOwner) {
-            adapter.notifyItemChanged(it)
-        }
-
+        viewModel.getSelected().observe(viewLifecycleOwner, Observer { result ->
+            adapter.notifyItemChanged(result)
+        })
     }
 
     private fun initImageListView() {
@@ -106,13 +105,6 @@ class ImageFragment : Fragment() {
             footer = ImageLoadStateAdapter(adapter)
         )
 
-
-//        adapter.peek()
-
-//        model.text.observe(viewLifecycleOwner, {
-//            adapter.notifyDataSetChanged()
-//        })
-//        rv_image.item
         lifecycleScope.launchWhenCreated {
             @OptIn(ExperimentalCoroutinesApi::class)
             binding.vm!!.posts.collectLatest {
