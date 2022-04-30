@@ -8,6 +8,7 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.service.codingtest.R
 import com.service.codingtest.databinding.NetworkStateItemBinding
+import com.service.codingtest.network.MLog
 
 class ImageLoadStateAdapter(private val adapter: ImageAdapter) :
     LoadStateAdapter<NetworkStateItemViewHolder>() {
@@ -37,6 +38,7 @@ class NetworkStateItemViewHolder(parent: ViewGroup, private val retryCallback: (
         }
 
     fun bindTo(loadState: LoadState) {
+        MLog.e("LoadStateAdapter", "bindTo")
         progressBar.isVisible = loadState is LoadState.Loading
         retry.isVisible = loadState is LoadState.Error
         errorMsg.isVisible = !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()

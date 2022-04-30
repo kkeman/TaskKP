@@ -106,24 +106,12 @@ class ImageAdapter(private val context: Context): PagingDataAdapter<ItemsEntity,
         private val PAYLOAD_SCORE = Any()
         val ChatDiffCallback = object : DiffUtil.ItemCallback<ItemsEntity>() {
             override fun areItemsTheSame(oldItem: ItemsEntity, newItem: ItemsEntity): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(oldItem: ItemsEntity, newItem: ItemsEntity): Boolean {
                 return oldItem.isbn == newItem.isbn
             }
 
-            override fun getChangePayload(oldItem: ItemsEntity, newItem: ItemsEntity): Any? {
-                return if (sameExceptScore(oldItem, newItem)) {
-                    PAYLOAD_SCORE
-                } else {
-                    null
-                }
+            override fun areContentsTheSame(oldItem: ItemsEntity, newItem: ItemsEntity): Boolean {
+                return oldItem == newItem
             }
-        }
-
-        private fun sameExceptScore(oldItem: ItemsEntity, newItem: ItemsEntity): Boolean {
-            return oldItem.copy(isbn = newItem.isbn) == newItem
         }
     }
 }
