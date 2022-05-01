@@ -2,17 +2,14 @@ package com.service.codingtest.view.fragments
 
 
 import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.*
@@ -34,8 +31,6 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.frag_image.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -47,9 +42,8 @@ class ImageFragment : Fragment() {
 
     private lateinit var binding: FragImageBinding
 
-    private lateinit var adapter: ImageAdapter
+    private val adapter: ImageAdapter by lazy { ImageAdapter(requireContext()) }
 
-    //    private val model: SharedViewModel by activityViewModels()
     private val viewModel: SharedViewModel by activityViewModels()
 
     class MainViewModelFactory(
@@ -99,7 +93,6 @@ class ImageFragment : Fragment() {
     }
 
     private fun initImageListView() {
-        adapter = ImageAdapter(requireContext())
         rv_image.adapter = adapter.withLoadStateHeaderAndFooter(
             header = ImageLoadStateAdapter(adapter),
             footer = ImageLoadStateAdapter(adapter)
@@ -107,21 +100,46 @@ class ImageFragment : Fragment() {
 
         lifecycleScope.launchWhenCreated {
             binding.vm!!.posts.collectLatest {
+                adapter.addLoadStateListener { loadState ->
+                    binding.apply {
+                        if(loadState.mediator!!.refresh is LoadState.Error) {
+                            val error = when {
+                                loadState.mediator?.prepend is LoadState.Error -> loadState.mediator?.prepend as LoadState.Error
+                                loadState.mediator?.append is LoadState.Error -> loadState.mediator?.append as LoadState.Error
+                                loadState.mediator?.refresh is LoadState.Error -> loadState.mediator?.refresh as LoadState.Error
+
+                                else -> null
+                            }
+                            error?.let {
+                                if (adapter.snapshot().isEmpty()) {
+                                    tvError.isVisible = true
+                                    tvError.text = it.error.localizedMessage
+                                }
+                            }
+
+                        } else if(loadState.source.refresh is LoadState.NotLoading
+                            && loadState.append.endOfPaginationReached
+                            && adapter.itemCount < 1) {
+                            tvError.isVisible = true
+                            tvError.text = getString(R.string.search_empty)
+
+                        } else{
+                            tvError.isVisible = false
+                        }
+                    }
+                }
+
                 adapter.submitData(it)
-            }
-        }
 
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest { loadStates ->
-                layout_swipe_refresh.isRefreshing = loadStates.refresh is LoadState.Loading
-            }
-        }
+                adapter.loadStateFlow.collectLatest { loadStates ->
+                    layout_swipe_refresh.isRefreshing = loadStates.refresh is LoadState.Loading
+                }
 
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow
-                .distinctUntilChangedBy { it.refresh }
-                .filter { it.refresh is LoadState.NotLoading }
-                .collect { rv_image.scrollToPosition(0) }
+                adapter.loadStateFlow
+                    .distinctUntilChangedBy { it.refresh }
+                    .filter { it.refresh is LoadState.NotLoading }
+                    .collect { rv_image.scrollToPosition(0) }
+            }
         }
     }
 
