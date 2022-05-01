@@ -1,6 +1,5 @@
 package com.service.codingtest.view.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.service.codingtest.R
 import com.service.codingtest.db.AppDB
 import com.service.codingtest.model.response.ItemsEntity
-import com.service.codingtest.view.adapters.FavoriteAdapter
 import com.service.codingtest.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.frag_detail.*
 import java.text.DateFormat
