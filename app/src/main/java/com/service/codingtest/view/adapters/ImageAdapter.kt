@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -82,6 +83,9 @@ class ImageAdapter(private val context: Context): PagingDataAdapter<ItemsEntity,
         }
 
         holder.itemView.setOnClickListener {
+
+            val imm: InputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
 
             val fm: FragmentManager = (context as MainActivity).supportFragmentManager
             fm.setFragmentResult("requestKey", bundleOf("bundleKey" to data, "position" to position))

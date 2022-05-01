@@ -1,19 +1,23 @@
 package com.service.codingtest.view.fragments
 
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.*
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.RecyclerView
 import androidx.savedstate.SavedStateRegistryOwner
 import com.service.codingtest.R
 import com.service.codingtest.databinding.FragImageBinding
@@ -93,6 +97,14 @@ class ImageFragment : Fragment() {
     }
 
     private fun initImageListView() {
+        rv_image.setOnTouchListener { view, event ->
+            if( event.action == MotionEvent.ACTION_UP ) {
+                view.performClick();
+            }
+            val imm: InputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
         rv_image.adapter = adapter.withLoadStateHeaderAndFooter(
             header = ImageLoadStateAdapter(adapter),
             footer = ImageLoadStateAdapter(adapter)
