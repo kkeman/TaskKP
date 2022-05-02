@@ -36,6 +36,10 @@ class PageKeyedRemoteMediator(
     ): MediatorResult {
         try {
 
+            if(query.isBlank()){
+                return MediatorResult.Success(endOfPaginationReached = true)
+            }
+
             var page = when (loadType) {
                 REFRESH -> 0
                 PREPEND ->  {

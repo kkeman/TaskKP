@@ -21,11 +21,13 @@
 
             <EditText
                 android:id="@+id/et_search"
+                android:hint="@string/input_book_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@={vm.searchWord}"/>
+                android:text="@={vm.searchWord}"
+                android:drawableEnd="@android:drawable/ic_menu_search"/>
 
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

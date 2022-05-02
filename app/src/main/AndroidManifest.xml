@@ -24,8 +24,7 @@
         </activity>
 
         <activity
-            android:name=".view.activitys.MainActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:name=".view.activitys.MainActivity" />
 
     </application>
 

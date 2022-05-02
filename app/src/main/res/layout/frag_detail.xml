@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tool="http://schemas.android.com/tools">
-
+    xmlns:tool="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true">
     <data>
-
         <import type="android.view.View" />
-
-        <!--        <variable-->
-        <!--            name="task"-->
-        <!--            type="com.example.android.architecture.blueprints.todoapp.data.Task" />-->
-
         <variable
             name="viewmodel"
             type="com.service.codingtest.viewmodel.SharedViewModel" />
@@ -20,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF">
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -45,7 +39,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.appcompat.widget.Toolbar>
-<!--        android:onCheckedChanged="@{() -> viewmodel.onClickEvent()}"-->
 
         <ImageView
             android:id="@+id/iv_url"
@@ -65,10 +58,10 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center_vertical"
+            app:layout_constraintRight_toLeftOf="@id/tv_datetime"
             android:textColor="#000000"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/tv_datetime"
             app:layout_constraintTop_toBottomOf="@id/iv_url"
             tool:text="책 이름" />
 

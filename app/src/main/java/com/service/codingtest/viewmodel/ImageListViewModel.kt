@@ -21,7 +21,6 @@ class ImageListViewModel(private val savedStateHandle: SavedStateHandle, private
 
     private val clearListCh = Channel<Unit>(Channel.CONFLATED)
 
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val posts = flowOf(
         clearListCh.consumeAsFlow().map {
 

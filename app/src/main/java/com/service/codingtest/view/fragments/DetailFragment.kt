@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -22,8 +23,6 @@ import java.util.*
 
 class DetailFragment : Fragment() {
 
-    private val mTAG = DetailFragment::class.java.name
-
     private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,13 +32,13 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar.setNavigationOnClickListener(View.OnClickListener { requireActivity().onBackPressed() })
+        toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
 
         setFragmentResultListener("requestKey") { requestKey, bundle ->
             val data = bundle.getParcelable<ItemsEntity>("bundleKey")!!
 
-            Glide.with(requireContext()).load(data.thumbnail)
-                .into(iv_url)
+            Glide.with(requireContext()).load(data.thumbnail).
+            placeholder(ContextCompat.getDrawable(requireActivity(), android.R.drawable.ic_menu_gallery)).into(iv_url)
 
             tv_title.text = data.title
 
@@ -62,7 +61,7 @@ class DetailFragment : Fragment() {
 
             cb_favorite.isChecked = data.isFavorite
 
-            cb_favorite.setOnCheckedChangeListener { compoundButton, b ->
+            cb_favorite.setOnCheckedChangeListener { _, b ->
                 data.isFavorite = b
 
                 lifecycleScope.launchWhenCreated {

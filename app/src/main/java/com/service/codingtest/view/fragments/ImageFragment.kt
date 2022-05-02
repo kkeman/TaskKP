@@ -1,7 +1,6 @@
 package com.service.codingtest.view.fragments
 
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
@@ -34,12 +33,10 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableEmitter
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.frag_image.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import java.util.concurrent.TimeUnit
 
 
@@ -111,46 +108,53 @@ class ImageFragment : Fragment() {
             footer = ImageLoadStateAdapter(adapter)
         )
 
+        adapter.addLoadStateListener { loadState ->
+            binding.apply {
+                MLog.d("ImageFragment", "loadState.source.refresh:"+loadState.source.refresh)
+                tvError.isVisible = false
+                if(loadState.mediator != null)
+                    if(loadState.mediator!!.refresh is LoadState.Error) {
+                        val error = when {
+                            loadState.mediator?.prepend is LoadState.Error -> loadState.mediator?.prepend as LoadState.Error
+                            loadState.mediator?.append is LoadState.Error -> loadState.mediator?.append as LoadState.Error
+                            loadState.mediator?.refresh is LoadState.Error -> loadState.mediator?.refresh as LoadState.Error
+
+                            else -> null
+                        }
+                        error?.let {
+                            if (adapter.snapshot().isEmpty()) {
+                                tvError.isVisible = true
+                                tvError.text = it.error.localizedMessage
+                            }
+                        }
+
+                    } else if(loadState.source.refresh is LoadState.NotLoading
+                        && loadState.append.endOfPaginationReached
+                        && adapter.itemCount < 1) {
+                        tvError.isVisible = true
+                        tvError.text = getString(R.string.search_empty)
+
+                    }
+            }
+        }
+
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    rv_image.scrollToPosition(0)
+                }
+            }
+        })
+
         lifecycleScope.launchWhenCreated {
             binding.vm!!.posts.collectLatest {
-                adapter.addLoadStateListener { loadState ->
-                    binding.apply {
-                        MLog.d("ImageFragment", "loadState.source.refresh:"+loadState.source.refresh)
-                        tvError.isVisible = false
-                        if(loadState.mediator!!.refresh is LoadState.Error) {
-                            val error = when {
-                                loadState.mediator?.prepend is LoadState.Error -> loadState.mediator?.prepend as LoadState.Error
-                                loadState.mediator?.append is LoadState.Error -> loadState.mediator?.append as LoadState.Error
-                                loadState.mediator?.refresh is LoadState.Error -> loadState.mediator?.refresh as LoadState.Error
-
-                                else -> null
-                            }
-                            error?.let {
-                                if (adapter.snapshot().isEmpty()) {
-                                    tvError.isVisible = true
-                                    tvError.text = it.error.localizedMessage
-                                }
-                            }
-
-                        } else if(loadState.source.refresh is LoadState.NotLoading
-                            && loadState.append.endOfPaginationReached
-                            && adapter.itemCount < 1) {
-                            tvError.isVisible = true
-                            tvError.text = getString(R.string.search_empty)
-                        }
-                    }
-                }
-
                 adapter.submitData(it)
+            }
+        }
 
-                adapter.loadStateFlow.collectLatest { loadStates ->
-                    layout_swipe_refresh.isRefreshing = loadStates.refresh is LoadState.Loading
-                }
-
-                adapter.loadStateFlow
-                    .distinctUntilChangedBy { it.refresh }
-                    .filter { it.refresh is LoadState.NotLoading }
-                    .collect { rv_image.scrollToPosition(0) }
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest {
+                layout_swipe_refresh.isRefreshing = it.refresh is LoadState.Loading
             }
         }
     }
@@ -160,6 +164,13 @@ class ImageFragment : Fragment() {
     }
 
     private fun initSearchEditText() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(et_search, 0)
+        et_search.postDelayed({
+            et_search.requestFocus();
+            imm.showSoftInput(et_search, 0)
+        }, 100)
+
         val observableTextQuery =
             Observable.create(ObservableOnSubscribe { emitter: ObservableEmitter<String>? ->
                 et_search.addTextChangedListener(object : TextWatcher {
@@ -180,18 +191,18 @@ class ImageFragment : Fragment() {
                     }
                 })
             })
-                .debounce(1, TimeUnit.SECONDS)
+                .debounce(0, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
         observableTextQuery.subscribe(object : Observer<String> {
             override fun onComplete() {}
-            override fun onSubscribe(d: io.reactivex.rxjava3.disposables.Disposable?) {}
+            override fun onSubscribe(d: Disposable) {}
             override fun onNext(t: String) {
                 binding.vm!!.showSubreddit()
             }
 
-            override fun onError(e: Throwable?) {}
+            override fun onError(e: Throwable) {}
         })
 
     }

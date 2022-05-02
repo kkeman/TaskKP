@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -40,8 +41,8 @@ class ImageAdapter(private val context: Context): PagingDataAdapter<ItemsEntity,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = getItem(position) ?: return
 
-        Glide.with(holder.itemView.context).load(data.thumbnail)
-            .into(holder.iv_thumb)
+        Glide.with(holder.itemView.context).load(data.thumbnail).
+        placeholder(ContextCompat.getDrawable(context, android.R.drawable.ic_menu_gallery)).into(holder.iv_thumb)
 
         holder.tv_title.text = data.title
 
@@ -89,8 +90,8 @@ class ImageAdapter(private val context: Context): PagingDataAdapter<ItemsEntity,
 
             val fm: FragmentManager = (context as MainActivity).supportFragmentManager
             fm.setFragmentResult("requestKey", bundleOf("bundleKey" to data, "position" to position))
-            val imageFragment: Fragment = DetailFragment()
-            fm.beginTransaction().add(R.id.main_container, imageFragment, "1").addToBackStack(null).commit()
+            val detailFragment: Fragment = DetailFragment()
+            fm.beginTransaction().add(R.id.main_container, detailFragment, "1").addToBackStack(null).commit()
         }
 
         MLog.d(TAG, data.isbn +  " / " + data.isFavorite + " / "+data.isbn)
