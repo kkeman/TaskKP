@@ -23,6 +23,7 @@ import com.service.codingtest.R
 import com.service.codingtest.databinding.FragImageBinding
 import com.service.codingtest.db.AppDB
 import com.service.codingtest.network.ImageAPI
+import com.service.codingtest.network.MLog
 import com.service.codingtest.repository.DbImagePostRepository
 import com.service.codingtest.view.adapters.ImageAdapter
 import com.service.codingtest.view.adapters.ImageLoadStateAdapter
@@ -114,6 +115,8 @@ class ImageFragment : Fragment() {
             binding.vm!!.posts.collectLatest {
                 adapter.addLoadStateListener { loadState ->
                     binding.apply {
+                        MLog.d("ImageFragment", "loadState.source.refresh:"+loadState.source.refresh)
+                        tvError.isVisible = false
                         if(loadState.mediator!!.refresh is LoadState.Error) {
                             val error = when {
                                 loadState.mediator?.prepend is LoadState.Error -> loadState.mediator?.prepend as LoadState.Error
@@ -134,9 +137,6 @@ class ImageFragment : Fragment() {
                             && adapter.itemCount < 1) {
                             tvError.isVisible = true
                             tvError.text = getString(R.string.search_empty)
-
-                        } else{
-                            tvError.isVisible = false
                         }
                     }
                 }
