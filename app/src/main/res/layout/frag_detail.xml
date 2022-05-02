@@ -65,10 +65,10 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center_vertical"
-            android:singleLine="true"
             android:textColor="#000000"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_datetime"
             app:layout_constraintTop_toBottomOf="@id/iv_url"
             tool:text="책 이름" />
 
