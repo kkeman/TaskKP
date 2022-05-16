@@ -73,4 +73,6 @@ dependencies {
 
     // rxjav
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
+    implementation "androidx.core:core-splashscreen:1.0.0-beta02"
 }
